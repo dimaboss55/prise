@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прайс-лист | Ваше Название Магазина</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .hidden {
+            display: none;
+        }
+        .category-btn {
+            transition: all 0.3s ease;
+        }
+        .active-category {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <!-- ОСНОВНОЙ КОНТЕЙНЕР -->
+    <div class="container mx-auto p-4 md:p-8">
+
+        <!-- ЗАГОЛОВОК -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-2">Наш Ассортимент</h1>
+            <p class="text-lg text-gray-500">Цветы и фурнитура для самых красивых букетов</p>
+        </header>
+
+        <!-- ПАНЕЛЬ УПРАВЛЕНИЯ: КАТЕГОРИИ И ПОИСК -->
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 px-4 md:px-0">
+            <!-- Кнопки переключения категорий -->
+            <div class="flex justify-center space-x-4">
+                <button id="show-flowers" class="category-btn px-6 py-3 bg-pink-500 text-white font-semibold rounded-lg shadow-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-opacity-75 active-category">
+                    Цветы
+                </button>
+                <button id="show-accessories" class="category-btn px-6 py-3 bg-teal-500 text-white font-semibold rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75">
+                    Фурнитура
+                </button>
+            </div>
+            <!-- Поиск -->
+            <div class="w-full md:w-auto">
+                 <input type="text" id="search-input" placeholder="🔍 Поиск в категории..." class="w-full md:w-64 p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-pink-400 focus:outline-none transition">
+            </div>
+        </div>
+
+        <!-- КОНТЕЙНЕР ДЛЯ ТОВАРОВ -->
+        <main id="main-content" class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <!-- Раздел "Цветы" -->
+            <div id="flowers-section">
+                <div id="flowers-list" class="divide-y divide-gray-200">
+                    <!-- Элементы списка товаров будут вставлены сюда -->
+                </div>
+            </div>
+            <!-- Раздел "Фурнитура" -->
+            <div id="accessories-section" class="hidden">
+                <div id="accessories-list" class="divide-y divide-gray-200">
+                     <!-- Элементы списка товаров будут вставлены сюда -->
+                </div>
+            </div>
+             <!-- Индикатор загрузки -->
+            <div id="loading-indicator" class="text-center p-10">
+                <p class="text-gray-500">Загрузка товаров...</p>
+            </div>
+             <!-- Сообщение "Не найдено" -->
+            <div id="no-results" class="text-center p-10 hidden">
+                <p class="text-gray-500">Товары не найдены.</p>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ДЛЯ ПРОСМОТРА -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden fade-in">
+        <div id="modal-content" class="bg-white rounded-lg shadow-2xl w-full max-w-md md:max-w-lg relative">
+            <img id="modal-img" src="https://placehold.co/600x400/cccccc/ffffff?text=Фото" alt="Фото товара" class="w-full h-64 object-cover rounded-t-lg">
+            <div class="p-6">
+                <h3 id="modal-title" class="text-2xl font-bold text-gray-800 mb-2">Название товара</h3>
+                <p id="modal-price" class="text-xl text-green-600 font-semibold mb-4">Цена</p>
+                <p id="modal-desc" class="text-gray-600">Описание товара.</p>
+            </div>
+            <button id="close-modal-btn" class="absolute top-2 right-2 text-white bg-black bg-opacity-50 rounded-full p-1 hover:bg-opacity-75">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // НАСТРОЙКА FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyDldbxLsHWQZiwwIkmP8cVqcWWCZkFP5LI",
+            authDomain: "my-flower-shop-db.firebaseapp.com",
+            projectId: "my-flower-shop-db",
+            storageBucket: "my-flower-shop-db.appspot.com",
+            messagingSenderId: "510540757339",
+            appId: "1:510540757339:web:8319f86fb603cd62f8427e"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        // ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
+        let currentCategory = 'flowers';
+        let productsCache = { flowers: [], accessories: [] };
+
+        const flowersSection = document.getElementById('flowers-section');
+        const accessoriesSection = document.getElementById('accessories-section');
+        const flowersList = document.getElementById('flowers-list');
+        const accessoriesList = document.getElementById('accessories-list');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const noResults = document.getElementById('no-results');
+        const modal = document.getElementById('modal');
+        const searchInput = document.getElementById('search-input');
+        
+        // ОТОБРАЖЕНИЕ ТОВАРОВ
+        function createProductItem(product) {
+            const item = document.createElement('div');
+            // Новый вид элемента: текстовая строка в списке
+            item.className = 'p-4 cursor-pointer hover:bg-gray-100 transition flex justify-between items-center';
+            item.innerHTML = `
+                <div>
+                    <h4 class="font-semibold text-gray-800">${product.name}</h4>
+                    <p class="text-gray-600 text-sm">${product.price}</p>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            `;
+            item.addEventListener('click', () => openModal(product.id, currentCategory));
+            return item;
+        }
+
+        function renderProducts(products, listElement) {
+            listElement.innerHTML = '';
+            // Управляем видимостью сообщения "Не найдено"
+            if (products.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                products.forEach(product => {
+                    const item = createProductItem(product);
+                    listElement.appendChild(item);
+                });
+            }
+        }
+
+        // ФИЛЬТРАЦИЯ И ОТОБРАЖЕНИЕ
+        function displayFilteredProducts() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const listElement = currentCategory === 'flowers' ? flowersList : accessoriesList;
+            
+            const filteredProducts = productsCache[currentCategory].filter(product => 
+                product.name.toLowerCase().includes(searchTerm)
+            );
+            
+            renderProducts(filteredProducts, listElement);
+        }
+
+        // ПОДПИСКА НА ДАННЫЕ ИЗ FIREBASE
+        function subscribeToCollection(collectionName) {
+            const q = collection(db, collectionName);
+            onSnapshot(q, (querySnapshot) => {
+                productsCache[collectionName] = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                if (collectionName === currentCategory) {
+                    displayFilteredProducts();
+                }
+                loadingIndicator.classList.add('hidden');
+            }, (error) => {
+                console.error(`Ошибка загрузки из ${collectionName}:`, error);
+                loadingIndicator.innerText = `Не удалось загрузить товары.`;
+            });
+        }
+
+        subscribeToCollection('flowers');
+        subscribeToCollection('accessories');
+
+        // ОБРАБОТЧИКИ СОБЫТИЙ
+        searchInput.addEventListener('input', displayFilteredProducts);
+
+        const btnFlowers = document.getElementById('show-flowers');
+        const btnAccessories = document.getElementById('show-accessories');
+
+        function switchCategory(category) {
+            currentCategory = category;
+            
+            flowersSection.classList.toggle('hidden', category !== 'flowers');
+            accessoriesSection.classList.toggle('hidden', category !== 'accessories');
+            
+            btnFlowers.classList.toggle('active-category', category === 'flowers');
+            btnAccessories.classList.toggle('active-category', category === 'accessories');
+            
+            searchInput.value = '';
+            displayFilteredProducts();
+        }
+        
+        btnFlowers.addEventListener('click', () => switchCategory('flowers'));
+        btnAccessories.addEventListener('click', () => switchCategory('accessories'));
+        
+        // МОДАЛЬНОЕ ОКНО
+        async function openModal(productId, category) {
+            const docRef = doc(db, category, productId);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const product = docSnap.data();
+                document.getElementById('modal-img').src = product.imageUrl || 'https://placehold.co/600x400/cccccc/ffffff?text=Нет+фото';
+                document.getElementById('modal-title').innerText = product.name;
+                document.getElementById('modal-price').innerText = product.price;
+                document.getElementById('modal-desc').innerText = product.description || 'Описание отсутствует.';
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+        document.getElementById('close-modal-btn').addEventListener('click', closeModal);
+
+    </script>
+</body>
+</html>
