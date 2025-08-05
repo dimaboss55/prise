@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Прайс-лист | с ценами и фото </title>
+    <title>Прайс-лист | с ценами и фото</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes fadeIn {
@@ -39,11 +39,17 @@
         <!-- ПАНЕЛЬ УПРАВЛЕНИЯ: КАТЕГОРИИ И ПОИСК -->
         <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 px-4 md:px-0">
             <!-- Кнопки переключения категорий -->
-            <div class="flex justify-center space-x-4">
-                <button id="show-flowers" class="category-btn px-6 py-3 bg-pink-500 text-white font-semibold rounded-lg shadow-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-opacity-75 active-category">
+            <div class="flex justify-center flex-wrap gap-2">
+                <button id="show-flowers" class="category-btn px-4 py-2 bg-pink-500 text-white font-semibold rounded-lg shadow-md hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-opacity-75 active-category">
                     Цветы
                 </button>
-                <button id="show-accessories" class="category-btn px-6 py-3 bg-teal-500 text-white font-semibold rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75">
+                 <button id="show-flowers-ecuador" class="category-btn px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+                    Цветы Эквадор
+                </button>
+                <button id="show-flowers-china" class="category-btn px-4 py-2 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75">
+                    Цветы Китай
+                </button>
+                <button id="show-accessories" class="category-btn px-4 py-2 bg-teal-500 text-white font-semibold rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75">
                     Фурнитура
                 </button>
             </div>
@@ -61,17 +67,29 @@
                     <!-- Элементы списка товаров будут вставлены сюда -->
                 </div>
             </div>
-            <!-- Раздел "Фурнитура" -->
-            <div id="accessories-section" class="hidden">
-                <div id="accessories-list" class="divide-y divide-gray-200">
+             <!-- Раздел "Цветы Эквадор" -->
+            <div id="flowers-ecuador-section" class="hidden">
+                <div id="flowers-ecuador-list" class="divide-y divide-gray-200">
                      <!-- Элементы списка товаров будут вставлены сюда -->
                 </div>
             </div>
-             <!-- Индикатор загрузки -->
+             <!-- Раздел "Цветы Китай" -->
+            <div id="flowers-china-section" class="hidden">
+                <div id="flowers-china-list" class="divide-y divide-gray-200">
+                     <!-- Элементы списка товаров будут вставлены сюда -->
+                </div>
+            </div>
+            <!-- Раздел "Фурнитура" -->
+            <div id="accessories-section" class="hidden">
+                <div id="accessories-list" class="divide-y divide-gray-200">
+                      <!-- Элементы списка товаров будут вставлены сюда -->
+                </div>
+            </div>
+              <!-- Индикатор загрузки -->
             <div id="loading-indicator" class="text-center p-10">
                 <p class="text-black-800">немного магии!!!!! </p>
             </div>
-             <!-- Сообщение "Не найдено" -->
+              <!-- Сообщение "Не найдено" -->
             <div id="no-results" class="text-center p-10 hidden">
                 <p class="text-gray-500">Товары не найдены.</p>
             </div>
@@ -114,16 +132,28 @@
         
         // ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
         let currentCategory = 'flowers';
-        let productsCache = { flowers: [], accessories: [] };
+        let productsCache = { flowers: [], accessories: [], 'flowers-ecuador': [], 'flowers-china': [] };
 
+        // ЭЛЕМЕНТЫ DOM
         const flowersSection = document.getElementById('flowers-section');
         const accessoriesSection = document.getElementById('accessories-section');
+        const flowersEcuadorSection = document.getElementById('flowers-ecuador-section');
+        const flowersChinaSection = document.getElementById('flowers-china-section');
+
         const flowersList = document.getElementById('flowers-list');
         const accessoriesList = document.getElementById('accessories-list');
+        const flowersEcuadorList = document.getElementById('flowers-ecuador-list');
+        const flowersChinaList = document.getElementById('flowers-china-list');
+
         const loadingIndicator = document.getElementById('loading-indicator');
         const noResults = document.getElementById('no-results');
         const modal = document.getElementById('modal');
         const searchInput = document.getElementById('search-input');
+        
+        const btnFlowers = document.getElementById('show-flowers');
+        const btnAccessories = document.getElementById('show-accessories');
+        const btnFlowersEcuador = document.getElementById('show-flowers-ecuador');
+        const btnFlowersChina = document.getElementById('show-flowers-china');
         
         // ОТОБРАЖЕНИЕ ТОВАРОВ
         function createProductItem(product, number) {
@@ -152,7 +182,7 @@
             } else {
                 noResults.classList.add('hidden');
                 products.forEach((product, index) => {
-                    const item = createProductItem(product, index + 1); // Передаем номер
+                    const item = createProductItem(product, index + 1);
                     listElement.appendChild(item);
                 });
             }
@@ -161,7 +191,22 @@
         // ФИЛЬТРАЦИЯ И ОТОБРАЖЕНИЕ
         function displayFilteredProducts() {
             const searchTerm = searchInput.value.toLowerCase();
-            const listElement = currentCategory === 'flowers' ? flowersList : accessoriesList;
+            let listElement;
+            
+            switch(currentCategory) {
+                case 'flowers':
+                    listElement = flowersList;
+                    break;
+                case 'accessories':
+                    listElement = accessoriesList;
+                    break;
+                case 'flowers-ecuador':
+                    listElement = flowersEcuadorList;
+                    break;
+                case 'flowers-china':
+                    listElement = flowersChinaList;
+                    break;
+            }
             
             const filteredProducts = productsCache[currentCategory].filter(product => 
                 product.name.toLowerCase().includes(searchTerm)
@@ -188,21 +233,24 @@
 
         subscribeToCollection('flowers');
         subscribeToCollection('accessories');
+        subscribeToCollection('flowers-ecuador');
+        subscribeToCollection('flowers-china');
 
         // ОБРАБОТЧИКИ СОБЫТИЙ
         searchInput.addEventListener('input', displayFilteredProducts);
-
-        const btnFlowers = document.getElementById('show-flowers');
-        const btnAccessories = document.getElementById('show-accessories');
 
         function switchCategory(category) {
             currentCategory = category;
             
             flowersSection.classList.toggle('hidden', category !== 'flowers');
             accessoriesSection.classList.toggle('hidden', category !== 'accessories');
+            flowersEcuadorSection.classList.toggle('hidden', category !== 'flowers-ecuador');
+            flowersChinaSection.classList.toggle('hidden', category !== 'flowers-china');
             
             btnFlowers.classList.toggle('active-category', category === 'flowers');
             btnAccessories.classList.toggle('active-category', category === 'accessories');
+            btnFlowersEcuador.classList.toggle('active-category', category === 'flowers-ecuador');
+            btnFlowersChina.classList.toggle('active-category', category === 'flowers-china');
             
             searchInput.value = '';
             displayFilteredProducts();
@@ -210,6 +258,8 @@
         
         btnFlowers.addEventListener('click', () => switchCategory('flowers'));
         btnAccessories.addEventListener('click', () => switchCategory('accessories'));
+        btnFlowersEcuador.addEventListener('click', () => switchCategory('flowers-ecuador'));
+        btnFlowersChina.addEventListener('click', () => switchCategory('flowers-china'));
         
         // МОДАЛЬНОЕ ОКНО
         async function openModal(productId, category) {
@@ -237,9 +287,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
