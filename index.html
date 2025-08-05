@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Прайс-лист с ценами и фото</title>
-    <!-- Скрипт конфигурации Tailwind CSS -->
+    <title>Прайс-лист | с ценами и фото</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Скрипт конфигурации Tailwind CSS должен идти ПОСЛЕ основной библиотеки -->
     <script>
         tailwind.config = {
           darkMode: 'class', // Включаем ручное переключение темы по классу 'dark'
         }
     </script>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -30,52 +30,6 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        /* Стили для переключателя темы */
-        .theme-switch-wrapper {
-            display: flex;
-            align-items: center;
-        }
-        .theme-switch {
-            display: inline-block;
-            height: 26px;
-            position: relative;
-            width: 50px;
-        }
-        .theme-switch input {
-            display:none;
-        }
-        .slider {
-            background-color: #ccc;
-            bottom: 0;
-            cursor: pointer;
-            left: 0;
-            position: absolute;
-            right: 0;
-            top: 0;
-            transition: .4s;
-        }
-        .slider:before {
-            background-color: #fff;
-            bottom: 4px;
-            content: "";
-            height: 18px;
-            left: 4px;
-            position: absolute;
-            transition: .4s;
-            width: 18px;
-        }
-        input:checked + .slider {
-            background-color: #4f46e5; /* Indigo */
-        }
-        input:checked + .slider:before {
-            transform: translateX(24px);
-        }
-        .slider.round {
-            border-radius: 34px;
-        }
-        .slider.round:before {
-            border-radius: 50%;
-        }
     </style>
 </head>
 <body class="bg-white dark:bg-black font-sans transition-colors duration-300">
@@ -87,14 +41,6 @@
         <header class="text-center mb-8 relative">
             <h1 class="text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-100 mb-2">Наш Ассортимент</h1>
             <p class="text-lg text-gray-500 dark:text-gray-400">🌼 Цветы и фурнитура для самых красивых букетов🌷</p>
-            
-            <!-- Переключатель темы -->
-            <div class="absolute top-0 right-0 p-2 theme-switch-wrapper">
-                <label class="theme-switch" for="theme-checkbox">
-                    <input type="checkbox" id="theme-checkbox" />
-                    <div class="slider round"></div>
-                </label>
-            </div>
         </header>
 
         <!-- ПАНЕЛЬ УПРАВЛЕНИЯ: КАТЕГОРИИ И ПОИСК -->
@@ -116,7 +62,7 @@
             </div>
             <!-- Поиск -->
             <div class="w-full md:w-auto">
-                 <input type="text" id="search-input" placeholder="➡🔍 например роза" class="w-full md:w-64 p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-pink-400 focus:outline-none transition dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:ring-pink-500">
+                 <input type="text" id="search-input" placeholder="➡🔍 поиск товара" class="w-full md:w-64 p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-pink-400 focus:outline-none transition dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:ring-pink-500">
             </div>
         </div>
 
@@ -171,34 +117,21 @@
         import { getFirestore, collection, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // --- ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ТЕМЫ ---
-        const themeToggle = document.getElementById('theme-checkbox');
         const docElement = document.documentElement;
 
         // Функция для применения темы
         const applyTheme = (theme) => {
             if (theme === 'dark') {
                 docElement.classList.add('dark');
-                themeToggle.checked = true;
             } else {
                 docElement.classList.remove('dark');
-                themeToggle.checked = false;
             }
         };
 
-        // Обработчик переключения
-        themeToggle.addEventListener('change', () => {
-            const newTheme = themeToggle.checked ? 'dark' : 'light';
-            localStorage.setItem('theme', newTheme); // Сохраняем выбор в localStorage
-            applyTheme(newTheme);
-        });
-
-        // Проверяем сохраненную тему или системные настройки при загрузке страницы
-        const savedTheme = localStorage.getItem('theme');
+        // Проверяем системные настройки при загрузке страницы
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         
-        if (savedTheme) {
-            applyTheme(savedTheme);
-        } else if (prefersDark) {
+        if (prefersDark) {
             applyTheme('dark');
         } else {
             applyTheme('light');
@@ -367,4 +300,3 @@
     </script>
 </body>
 </html>
-
