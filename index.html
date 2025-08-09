@@ -121,9 +121,16 @@
         /* Стиль для АКТИВНОЙ (выбранной) кнопки */
         .active-category {
             transform: translateY(-2px) scale(1.05); /* Приподнимаем и слегка увеличиваем */
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Добавляем тень для эффекта "парения" */
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4); /* Тень в цвет кнопки */
+            color: #ffffff; /* Белый текст для лучшего контраста */
         }
 
+        /* Меняем фон у АКТИВНОЙ кнопки на более яркий */
+        .active-category::after {
+            background: linear-gradient(to bottom, #a78bfa, #7c3aed); /* Яркий фиолетовый градиент */
+            border-color: #6d28d9; /* Более темная рамка */
+        }
+        
         /* Убираем неоновую рамку у АКТИВНОЙ кнопки. Это ключевой момент. */
         .active-category::before {
             display: none; /* Просто скрываем псевдо-элемент с анимацией */
@@ -213,7 +220,7 @@
     </div>
 
     <!-- МОДАЛЬНОЕ ОКНО ДЛЯ ПРОСМОТРА (скрыто по умолчанию) -->
-    <div id="modal" class="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center p-4 hidden fade-in">
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center p-4 hidden fade-in z-20">
         <!-- Внутренний контейнер модального окна -->
         <div id="modal-content" class="bg-white dark:bg-gray-800 rounded-lg shadow-2xl w-full max-w-md md:max-w-lg relative border border-gray-200 dark:border-gray-700">
             <img id="modal-img" src="https://placehold.co/600x400/cccccc/ffffff?text=Фото" alt="Фото товара" class="w-full h-64 object-cover rounded-t-lg">
