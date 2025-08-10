@@ -164,50 +164,63 @@
         <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 px-4 md:px-0">
             <!-- Кнопки переключения категорий -->
             <div class="flex justify-center flex-wrap gap-4">
-                <button id="show-flowers" class="category-btn px-5 py-2 font-semibold focus:outline-none active-category">
-                    Цветы
-                </button>
-                 <button id="show-flowers-ecuador" class="category-btn px-5 py-2 font-semibold focus:outline-none">
-                    Цветы Эквадор
-                </button>
-                <button id="show-flowers-china" class="category-btn px-5 py-2 font-semibold focus:outline-none">
-                    Цветы Китай
-                </button>
-                <button id="show-accessories" class="category-btn px-5 py-2 font-semibold focus:outline-none">
-                    Фурнитура
-                </button>
+                <button id="btn-holland-room" class="category-btn px-5 py-2 font-semibold focus:outline-none active-category">Голландия комнатные</button>
+                <button id="btn-china-cut" class="category-btn px-5 py-2 font-semibold focus:outline-none">Китай срезка</button>
+                <button id="btn-kenya-cut" class="category-btn px-5 py-2 font-semibold focus:outline-none">Кения срезка</button>
+                <button id="btn-ecuador-cut" class="category-btn px-5 py-2 font-semibold focus:outline-none">Эквадор срезка</button>
+                <button id="btn-holland-cut" class="category-btn px-5 py-2 font-semibold focus:outline-none">Голландия срезка</button>
+                <button id="btn-colombia-cut" class="category-btn px-5 py-2 font-semibold focus:outline-none">Колумбия срезка</button>
+                <button id="btn-china-room" class="category-btn px-5 py-2 font-semibold focus:outline-none">Китай комнатные</button>
+                <button id="btn-accessories" class="category-btn px-5 py-2 font-semibold focus:outline-none">Аксессуары</button>
             </div>
             <!-- Поиск и Сортировка -->
             <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
                  <input type="text" id="search-input" placeholder="➡🔍 поиск" class="w-full md:w-64 p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-violet-400 focus:outline-none transition dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200 dark:placeholder-gray-400 dark:focus:ring-violet-500">
                  <select id="sort-select" class="w-full sm:w-auto p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-violet-400 focus:outline-none transition dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200">
-                    <option value="default">Сортировка по умолчанию</option>
-                    <option value="name-asc">По названию (А-Я)</option>
-                    <option value="name-desc">По названию (Я-А)</option>
-                    <option value="price-asc">По цене (сначала дешевые)</option>
-                    <option value="price-desc">По цене (сначала дорогие)</option>
+                     <option value="default">Сортировка по умолчанию</option>
+                     <option value="name-asc">По названию (А-Я)</option>
+                     <option value="name-desc">По названию (Я-А)</option>
+                     <option value="price-asc">По цене (сначала дешевые)</option>
+                     <option value="price-desc">По цене (сначала дорогие)</option>
                  </select>
             </div>
         </div>
 
         <!-- КОНТЕЙНЕР ДЛЯ ТОВАРОВ -->
         <main id="main-content" class="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200 dark:bg-gray-900/70 dark:border-gray-800">
-            <!-- Раздел "Цветы" (изначально видим) -->
-            <div id="flowers-section">
-                <div id="flowers-list" class="divide-y divide-gray-200 dark:divide-gray-700"></div>
+            <!-- Раздел "Голландия комнатные" (изначально видим) -->
+            <div id="holland-room-section">
+                <div id="holland-room-list" class="divide-y divide-gray-200 dark:divide-gray-700"></div>
             </div>
-             <!-- Раздел "Цветы Эквадор" (изначально скрыт) -->
-            <div id="flowers-ecuador-section" class="hidden">
-                <div id="flowers-ecuador-list" class="divide-y divide-gray-200 dark:divide-gray-700"></div>
+            <!-- Раздел "Китай срезка" (изначально скрыт) -->
+            <div id="china-cut-section" class="hidden">
+                <div id="china-cut-list" class="divide-y divide-gray-200 dark:divide-gray-700"></div>
             </div>
-             <!-- Раздел "Цветы Китай" (изначально скрыт) -->
-            <div id="flowers-china-section" class="hidden">
-                <div id="flowers-china-list" class="divide-y divide-gray-200 dark:divide-gray-700"></div>
+            <!-- Раздел "Кения срезка" (изначально скрыт) -->
+            <div id="kenya-cut-section" class="hidden">
+                <div id="kenya-cut-list" class="divide-y divide-gray-200 dark:divide-gray-700"></div>
             </div>
-            <!-- Раздел "Фурнитура" (изначально скрыт) -->
+            <!-- Раздел "Эквадор срезка" (изначально скрыт) -->
+            <div id="ecuador-cut-section" class="hidden">
+                <div id="ecuador-cut-list" class="divide-y divide-gray-200 dark:divide-gray-700"></div>
+            </div>
+             <!-- Раздел "Голландия срезка" (изначально скрыт) -->
+            <div id="holland-cut-section" class="hidden">
+                <div id="holland-cut-list" class="divide-y divide-gray-200 dark:divide-gray-700"></div>
+            </div>
+            <!-- Раздел "Колумбия срезка" (изначально скрыт) -->
+            <div id="colombia-cut-section" class="hidden">
+                <div id="colombia-cut-list" class="divide-y divide-gray-200 dark:divide-gray-700"></div>
+            </div>
+            <!-- Раздел "Китай комнатные" (изначально скрыт) -->
+            <div id="china-room-section" class="hidden">
+                <div id="china-room-list" class="divide-y divide-gray-200 dark:divide-gray-700"></div>
+            </div>
+            <!-- Раздел "Аксессуары" (изначально скрыт) -->
             <div id="accessories-section" class="hidden">
                 <div id="accessories-list" class="divide-y divide-gray-200 dark:divide-gray-700"></div>
             </div>
+            
              <!-- Индикатор загрузки (виден, пока данные грузятся) -->
             <div id="loading-indicator" class="text-center p-10">
                 <p class="text-gray-800 dark:text-gray-300">немного магии!!!!! </p>
@@ -296,27 +309,57 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         
-        let currentCategory = 'flowers';
-        let productsCache = { flowers: [], accessories: [], 'flowers-ecuador': [], 'flowers-china': [] };
+        // Устанавливаем начальную категорию и создаем кэш для всех категорий
+        let currentCategory = 'holland-room';
+        let productsCache = {
+            'holland-room': [],
+            'china-cut': [],
+            'kenya-cut': [],
+            'ecuador-cut': [],
+            'holland-cut': [],
+            'colombia-cut': [],
+            'china-room': [],
+            'accessories': []
+        };
 
-        const flowersSection = document.getElementById('flowers-section');
-        const accessoriesSection = document.getElementById('accessories-section');
-        const flowersEcuadorSection = document.getElementById('flowers-ecuador-section');
-        const flowersChinaSection = document.getElementById('flowers-china-section');
-        const flowersList = document.getElementById('flowers-list');
-        const accessoriesList = document.getElementById('accessories-list');
-        const flowersEcuadorList = document.getElementById('flowers-ecuador-list');
-        const flowersChinaList = document.getElementById('flowers-china-list');
+        // Получаем ссылки на все необходимые DOM-элементы
         const loadingIndicator = document.getElementById('loading-indicator');
         const noResults = document.getElementById('no-results');
         const modal = document.getElementById('modal');
         const searchInput = document.getElementById('search-input');
         const sortSelect = document.getElementById('sort-select');
-        const btnFlowers = document.getElementById('show-flowers');
-        const btnAccessories = document.getElementById('show-accessories');
-        const btnFlowersEcuador = document.getElementById('show-flowers-ecuador');
-        const btnFlowersChina = document.getElementById('show-flowers-china');
+
+        // Секции
+        const hollandRoomSection = document.getElementById('holland-room-section');
+        const chinaCutSection = document.getElementById('china-cut-section');
+        const kenyaCutSection = document.getElementById('kenya-cut-section');
+        const ecuadorCutSection = document.getElementById('ecuador-cut-section');
+        const hollandCutSection = document.getElementById('holland-cut-section');
+        const colombiaCutSection = document.getElementById('colombia-cut-section');
+        const chinaRoomSection = document.getElementById('china-room-section');
+        const accessoriesSection = document.getElementById('accessories-section');
+
+        // Списки
+        const hollandRoomList = document.getElementById('holland-room-list');
+        const chinaCutList = document.getElementById('china-cut-list');
+        const kenyaCutList = document.getElementById('kenya-cut-list');
+        const ecuadorCutList = document.getElementById('ecuador-cut-list');
+        const hollandCutList = document.getElementById('holland-cut-list');
+        const colombiaCutList = document.getElementById('colombia-cut-list');
+        const chinaRoomList = document.getElementById('china-room-list');
+        const accessoriesList = document.getElementById('accessories-list');
+
+        // Кнопки
+        const btnHollandRoom = document.getElementById('btn-holland-room');
+        const btnChinaCut = document.getElementById('btn-china-cut');
+        const btnKenyaCut = document.getElementById('btn-kenya-cut');
+        const btnEcuadorCut = document.getElementById('btn-ecuador-cut');
+        const btnHollandCut = document.getElementById('btn-holland-cut');
+        const btnColombiaCut = document.getElementById('btn-colombia-cut');
+        const btnChinaRoom = document.getElementById('btn-china-room');
+        const btnAccessories = document.getElementById('btn-accessories');
         
+        // Функция для создания элемента списка товаров
         function createProductItem(product, number) {
             const item = document.createElement('div');
             item.className = 'p-4 cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition flex justify-between items-center fade-in';
@@ -336,6 +379,7 @@
             return item;
         }
 
+        // Функция для отображения товаров в списке
         function renderProducts(products, listElement) {
             listElement.innerHTML = '';
             noResults.classList.toggle('hidden', products.length > 0);
@@ -344,19 +388,27 @@
                 listElement.appendChild(item);
             });
         }
-
+        
+        // Функция для фильтрации и сортировки товаров
         function displayFilteredProducts() {
             const searchTerm = searchInput.value.toLowerCase();
+            // Карта для сопоставления имени категории с элементом списка
             const listMap = {
-                'flowers': flowersList,
-                'accessories': accessoriesList,
-                'flowers-ecuador': flowersEcuadorList,
-                'flowers-china': flowersChinaList
+                'holland-room': hollandRoomList,
+                'china-cut': chinaCutList,
+                'kenya-cut': kenyaCutList,
+                'ecuador-cut': ecuadorCutList,
+                'holland-cut': hollandCutList,
+                'colombia-cut': colombiaCutList,
+                'china-room': chinaRoomList,
+                'accessories': accessoriesList
             };
             const listElement = listMap[currentCategory];
             
+            // Фильтрация по поисковому запросу
             let filteredProducts = productsCache[currentCategory].filter(p => p.name.toLowerCase().includes(searchTerm));
 
+            // Сортировка
             const sortValue = sortSelect.value;
             if (sortValue !== 'default') {
                 filteredProducts.sort((a, b) => {
@@ -375,10 +427,13 @@
             renderProducts(filteredProducts, listElement);
         }
 
+        // Функция для подписки на изменения в коллекции Firebase
         function subscribeToCollection(collectionName) {
             const q = collection(db, collectionName);
             onSnapshot(q, (querySnapshot) => {
+                // Обновляем кэш
                 productsCache[collectionName] = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                // Если это текущая активная категория, обновляем отображение
                 if (collectionName === currentCategory) {
                     displayFilteredProducts();
                 }
@@ -389,42 +444,62 @@
             });
         }
 
-        ['flowers', 'accessories', 'flowers-ecuador', 'flowers-china'].forEach(subscribeToCollection);
+        // Подписываемся на все коллекции
+        Object.keys(productsCache).forEach(subscribeToCollection);
 
+        // Добавляем обработчики для поиска и сортировки
         searchInput.addEventListener('input', displayFilteredProducts);
         sortSelect.addEventListener('change', displayFilteredProducts);
 
+        // Функция для переключения между категориями
         function switchCategory(category) {
             currentCategory = category;
             
+            // Карты для сопоставления имени категории с секцией и кнопкой
             const sectionMap = {
-                'flowers': flowersSection,
-                'accessories': accessoriesSection,
-                'flowers-ecuador': flowersEcuadorSection,
-                'flowers-china': flowersChinaSection
+                'holland-room': hollandRoomSection,
+                'china-cut': chinaCutSection,
+                'kenya-cut': kenyaCutSection,
+                'ecuador-cut': ecuadorCutSection,
+                'holland-cut': hollandCutSection,
+                'colombia-cut': colombiaCutSection,
+                'china-room': chinaRoomSection,
+                'accessories': accessoriesSection
             };
             const btnMap = {
-                'flowers': btnFlowers,
-                'accessories': btnAccessories,
-                'flowers-ecuador': btnFlowersEcuador,
-                'flowers-china': btnFlowersChina
+                'holland-room': btnHollandRoom,
+                'china-cut': btnChinaCut,
+                'kenya-cut': btnKenyaCut,
+                'ecuador-cut': btnEcuadorCut,
+                'holland-cut': btnHollandCut,
+                'colombia-cut': btnColombiaCut,
+                'china-room': btnChinaRoom,
+                'accessories': btnAccessories
             };
 
+            // Переключаем видимость секций и активное состояние кнопок
             for (const cat in sectionMap) {
                 sectionMap[cat].classList.toggle('hidden', cat !== category);
                 btnMap[cat].classList.toggle('active-category', cat === category);
             }
             
+            // Сбрасываем поиск и сортировку и обновляем список
             searchInput.value = '';
             sortSelect.value = 'default';
             displayFilteredProducts();
         }
         
-        btnFlowers.addEventListener('click', () => switchCategory('flowers'));
+        // Добавляем обработчики кликов на все кнопки категорий
+        btnHollandRoom.addEventListener('click', () => switchCategory('holland-room'));
+        btnChinaCut.addEventListener('click', () => switchCategory('china-cut'));
+        btnKenyaCut.addEventListener('click', () => switchCategory('kenya-cut'));
+        btnEcuadorCut.addEventListener('click', () => switchCategory('ecuador-cut'));
+        btnHollandCut.addEventListener('click', () => switchCategory('holland-cut'));
+        btnColombiaCut.addEventListener('click', () => switchCategory('colombia-cut'));
+        btnChinaRoom.addEventListener('click', () => switchCategory('china-room'));
         btnAccessories.addEventListener('click', () => switchCategory('accessories'));
-        btnFlowersEcuador.addEventListener('click', () => switchCategory('flowers-ecuador'));
-        btnFlowersChina.addEventListener('click', () => switchCategory('flowers-china'));
         
+        // Функция для открытия модального окна с детальной информацией о товаре
         async function openModal(productId, category) {
             const docRef = doc(db, category, productId);
             const docSnap = await getDoc(docRef);
@@ -438,10 +513,12 @@
             modal.classList.remove('hidden');
         }
 
+        // Функция для закрытия модального окна
         function closeModal() {
             modal.classList.add('hidden');
         }
 
+        // Обработчики для закрытия модального окна
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
         });
